@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Lời Mời Cưới - Wedding Invitation</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Playfair+Display:wght@400;600;700&family=Cormorant+Garamond:wght@300;400;600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Audio Player - Cuoi Nhau Di (Yes I Do) -->
+    <audio id="weddingMusic">
+        <source src="images/Cuoi Nhau Di (Yes I Do).mp3" type="audio/mpeg">
+    </audio>
+    
+    <!-- Music Player - Simple Round Button -->
+    <div class="music-player" id="musicPlayer">
+        <button class="play-btn" id="playBtn" onclick="toggleMusic()">
+            <span class="play-icon">❚❚</span>
+        </button>
+    </div>
+    
+    <!-- Floating Hearts Background -->
+    <div class="hearts-container" id="heartsContainer"></div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="invitation-card">
+            <div class="monogram">
+                <div class="monogram-circle">
+                    <span class="initials">K & L</span>
+                </div>
+            </div>
+            <div class="couple-names-container">
+                <h1 class="couple-name couple-name-top" data-text="Đăng Khoa">Đăng Khoa</h1>
+                <div class="couple-heart">
+                    <span class="heart-icon">♥</span>
+                    <span class="heart-icon heart-overlay">♥</span>
+                </div>
+                <h1 class="couple-name couple-name-bottom" data-text="Phương Ly">Phương Ly</h1>
+            </div>
+            <h2 class="subtitle">Lời Mời Cưới</h2>
+            <div class="divider"></div>
+            <p class="invitation-text">
+                Xin chào bạn iu của tôiiiiiiiii
+            </p>
+            <div class="date-venue">
+                <p class="date">Chủ Nhật, 30 Tháng 11, 2025</p>
+                <p class="time">Lúc 16:00</p>
+                <p class="venue">Gia đình nhà trai</p>
+                <p class="venue-detail">Thôn Cóc Dỹ (Đá Bia), Xã Hữu Lũng, Tỉnh Lạng Sơn</p>
+            </div>
+            
+            <!-- Mini Calendar -->
+            <div class="mini-calendar">
+                <div class="calendar-header">
+                    <span class="calendar-month">Tháng 11/2025</span>
+                </div>
+                <div class="calendar-weekdays">
+                    <span>T2</span>
+                    <span>T3</span>
+                    <span>T4</span>
+                    <span>T5</span>
+                    <span>T6</span>
+                    <span>T7</span>
+                    <span>CN</span>
+                </div>
+                <div class="calendar-days">
+                    <span class="calendar-day empty"></span>
+                    <span class="calendar-day">1</span>
+                    <span class="calendar-day">2</span>
+                    <span class="calendar-day">3</span>
+                    <span class="calendar-day">4</span>
+                    <span class="calendar-day">5</span>
+                    <span class="calendar-day">6</span>
+                    <span class="calendar-day">7</span>
+                    <span class="calendar-day">8</span>
+                    <span class="calendar-day">9</span>
+                    <span class="calendar-day">10</span>
+                    <span class="calendar-day">11</span>
+                    <span class="calendar-day">12</span>
+                    <span class="calendar-day">13</span>
+                    <span class="calendar-day">14</span>
+                    <span class="calendar-day">15</span>
+                    <span class="calendar-day">16</span>
+                    <span class="calendar-day">17</span>
+                    <span class="calendar-day">18</span>
+                    <span class="calendar-day">19</span>
+                    <span class="calendar-day">20</span>
+                    <span class="calendar-day">21</span>
+                    <span class="calendar-day">22</span>
+                    <span class="calendar-day">23</span>
+                    <span class="calendar-day">24</span>
+                    <span class="calendar-day">25</span>
+                    <span class="calendar-day">26</span>
+                    <span class="calendar-day">27</span>
+                    <span class="calendar-day">28</span>
+                    <span class="calendar-day">29</span>
+                    <span class="calendar-day calendar-day-highlight">
+                        <span class="calendar-day-number">30</span>
+                        <span class="calendar-heart">♥</span>
+                    </span>
+                </div>
+            </div>
+            
+            <div class="cta-buttons">
+                <button class="btn btn-primary" onclick="scrollToRSVP()">Lời mời tham dự</button>
+                <button class="btn btn-secondary" onclick="scrollToDetails()">Xem chi tiết</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Story Section -->
+    <section class="our-story" id="ourStory">
+        <div class="container">
+            <h2 class="section-title">Câu Chuyện Của Chúng Tôi</h2>
+            <div class="story-content">
+                <div class="story-text">
+                    <p class="story-intro">
+                        Mọi câu chuyện đẹp đều bắt đầu từ một khoảnh khắc đặc biệt. 
+                        Chúng tôi gặp nhau vào một buổi chiều mùa xuân năm 2023, 
+                        và từ đó, mỗi ngày đều là một trang mới trong cuốn sách tình yêu của chúng tôi.
+                    </p>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <h3>Gặp Gỡ</h3>
+                                <p>Mùa Xuân 2023</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <h3>Ngày Đầu Tiên</h3>
+                                <p>Mùa Xuân 2023</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <h3>Lời Cầu Hôn</h3>
+                                <p>Mùa Thu 2025</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <h3>Ngày Cưới</h3>
+                                <p>Mùa Thu 2025</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="story-image">
+                    <div class="photo-frame">
+                        <div class="frame-decoration"></div>
+                        <img src="images/20411.jpg" alt="Ảnh Của Chúng Tôi" class="story-photo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="photo-placeholder" style="display: none;">
+                            <span class="photo-text">Ảnh Của Chúng Tôi</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Event Details Section -->
+    <section class="event-details" id="eventDetails">
+        <div class="container">
+            <h2 class="section-title">Chi Tiết Sự Kiện</h2>
+            <div class="details-grid">
+                <div class="detail-card">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2L2 7L12 12L22 7L12 2Z"/>
+                            <path d="M2 17L12 22L22 17"/>
+                            <path d="M2 12L12 17L22 12"/>
+                        </svg>
+                    </div>
+                    <h3>Lễ Cưới</h3>
+                    <p>Chủ Nhật, 30 Tháng 11</p>
+                    <p>16:00</p>
+                    <p class="location">Gia đình nhà trai</p>
+                    <p class="location-detail">Thôn Cóc Dỹ (Đá Bia), Xã Hữu Lũng, Tỉnh Lạng Sơn</p>
+                </div>
+                <div class="detail-card">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2V22M2 12H22"/>
+                            <circle cx="12" cy="12" r="10"/>
+                        </svg>
+                    </div>
+                    <h3>Tiệc Chiêu Đãi</h3>
+                    <p>Chủ Nhật, 30 Tháng 11</p>
+                    <p>16:00</p>
+                    <p class="location">Gia đình nhà trai</p>
+                    <p class="location-detail">Thôn Cóc Dỹ (Đá Bia), Xã Hữu Lũng, Tỉnh Lạng Sơn</p>
+                </div>
+                <div class="detail-card">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2L2 7L12 12L22 7L12 2Z"/>
+                            <path d="M2 12L12 17L22 12"/>
+                        </svg>
+                    </div>
+                    <h3>Trang Phục</h3>
+                    <p>Tùy chọn</p>
+                    <p class="dress-note">Màu sắc trang trọng được khuyến khích</p>
+                </div>
+                <div class="detail-card">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10C21 17 12 23 12 23C12 23 3 17 3 10C3 5.02944 7.02944 1 12 1C16.9706 1 21 5.02944 21 10Z"/>
+                            <circle cx="12" cy="10" r="3"/>
+                        </svg>
+                    </div>
+                    <h3>Địa Điểm</h3>
+                    <p>Gia đình nhà trai</p>
+                    <p class="location">Thôn Cóc Dỹ (Đá Bia)</p>
+                    <p class="location-detail">Xã Hữu Lũng, Tỉnh Lạng Sơn</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Photo Gallery Section -->
+    <section class="photo-gallery">
+        <div class="container">
+            <h2 class="section-title">Khoảnh Khắc Đẹp</h2>
+            <div class="gallery-strip">
+                <div class="gallery-item" data-image="images/20294.jpg" data-index="0">
+                    <img src="images/20592.jpg" alt="Khoảnh khắc đẹp 1" class="gallery-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="gallery-image-placeholder" style="display: none;">
+                        <span>Ảnh 1</span>
+                    </div>
+                </div>
+                <div class="gallery-item" data-image="images/20529.jpg" data-index="1">
+                    <img src="images/20529.jpg" alt="Khoảnh khắc đẹp 2" class="gallery-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="gallery-image-placeholder" style="display: none;">
+                        <span>Ảnh 2</span>
+                    </div>
+                </div>
+                <div class="gallery-item" data-image="images/20592.jpg" data-index="2">
+                    <img src="images/20623.jpg" alt="Khoảnh khắc đẹp 3" class="gallery-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="gallery-image-placeholder" style="display: none;">
+                        <span>Ảnh 3</span>
+                    </div>
+                </div>
+                <div class="gallery-item" data-image="images/20629.jpg" data-index="3">
+                    <img src="images/20629.jpg" alt="Khoảnh khắc đẹp 4" class="gallery-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="gallery-image-placeholder" style="display: none;">
+                        <span>Ảnh 4</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox Modal -->
+    <div class="gallery-lightbox" id="galleryLightbox">
+        <button class="gallery-lightbox-close" onclick="closeLightbox()">×</button>
+        <button class="gallery-lightbox-nav gallery-lightbox-prev" onclick="changeLightboxImage(-1)">‹</button>
+        <button class="gallery-lightbox-nav gallery-lightbox-next" onclick="changeLightboxImage(1)">›</button>
+        <div class="gallery-lightbox-content">
+            <img src="" alt="Khoảnh khắc đẹp" class="gallery-lightbox-image" id="lightboxImage">
+        </div>
+    </div>
+
+    <!-- RSVP Section -->
+    <section class="rsvp-section" id="rsvp">
+        <div class="container">
+            <h2 class="section-title">Xác Nhận Tham Dự</h2>
+            <p class="rsvp-intro">Chúng tôi rất mong được đón tiếp bạn trong ngày đặc biệt này</p>
+            <form class="rsvp-form" id="rsvpForm">
+                <div class="form-group">
+                    <label for="name">Tên của bạn *</label>
+                    <input type="text" id="name" name="name" placeholder="Nhập tên của bạn" required>
+                </div>
+                <div class="form-group">
+                    <label for="guests">Số lượng khách *</label>
+                    <input type="number" id="guests" name="guests" placeholder="Số người tham dự" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="attending">Bạn có thể tham dự không? *</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="attending" value="yes" required>
+                            <span>Có, tôi sẽ tham dự</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="attending" value="no" required>
+                            <span>Không, tôi không thể tham dự</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="message">Lời nhắn (tùy chọn)</label>
+                    <textarea id="message" name="message" placeholder="Gửi lời chúc mừng hoặc lời nhắn đến cô dâu chú rể..." rows="4"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-submit">Gửi Xác Nhận</button>
+            </form>
+            <p class="rsvp-footer">Chúng tôi rất mong được gặp mặt và ăn mừng cùng bạn</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p id="footerText" class="footer-text">&copy; 2025 Đăng Khoa & Phương Ly. Made with ❤️</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
