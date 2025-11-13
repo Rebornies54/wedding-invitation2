@@ -417,9 +417,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     console.info('💡 Để lưu vào Google Sheets, vui lòng cấu hình GOOGLE_SCRIPT_URL trong script.js');
                 }
                 
-                // Always save to localStorage as backup (even if Google Sheets succeeds)
-                const savedRSVP = saveRSVPDataToLocalStorage(data);
-                console.log('RSVP saved to localStorage:', savedRSVP);
+                // Tạm thời tắt localStorage để debug
+                // const savedRSVP = saveRSVPDataToLocalStorage(data);
+                // console.log('RSVP saved to localStorage:', savedRSVP);
                 
                 // Show petals animation
                 createPetalsAnimation();
