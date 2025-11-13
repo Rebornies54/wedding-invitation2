@@ -1,7 +1,7 @@
 // Google Apps Script URL
 // Cập nhật URL này sau khi deploy Google Apps Script
 // Hoặc tạo biến môi trường trên Vercel và sử dụng build-time replacement
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyAtSOEKKoCxOBa2IE3SBnQ0HtA7vNEarmJE1gf8uQT2od-CacPRBS1I_wyqY35i5is-Q/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbySnKLVG39og2aE5ofIDq0_T6KBcECK8389s9MN2_zuurD3EmI3U4X2V1y4A-8-IoaCbw/exec';
 
 // Premium Heart Colors - 3 beautiful tones
 const HEART_COLORS = [
