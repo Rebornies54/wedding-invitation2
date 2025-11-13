@@ -194,6 +194,9 @@ async function submitRSVPToGoogle(data) {
         
         // Thử với CORS mode trước
         try {
+            console.log('📤 Sending POST request to:', GOOGLE_SCRIPT_URL);
+            console.log('📦 Request body:', JSON.stringify(requestData, null, 2));
+            
             const response = await fetch(GOOGLE_SCRIPT_URL, {
                 method: 'POST',
                 mode: 'cors',
@@ -203,39 +206,53 @@ async function submitRSVPToGoogle(data) {
                 body: JSON.stringify(requestData)
             });
             
-            console.log('Response status:', response.status, response.statusText);
+            console.log('📥 Response received - Status:', response.status, response.statusText);
+            console.log('📥 Response headers:', [...response.headers.entries()]);
             
             if (!response.ok) {
                 const errorText = await response.text();
-                console.error('Response error:', errorText);
+                console.error('❌ Response error text:', errorText);
                 throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
             }
             
             const result = await response.json();
-            console.log('Response from Google Apps Script:', result);
+            console.log('✅ Response JSON:', JSON.stringify(result, null, 2));
             
             if (result.success) {
-                return { success: true, message: result.message || 'Đã gửi thông tin thành công!' };
+                console.log('🎉 Google Sheets submission successful!');
+                return { success: true, message: result.message || 'Đã gửi thông tin thành công!', data: result.data };
             } else {
-                throw new Error(result.message || 'Có lỗi xảy ra khi gửi dữ liệu');
+                console.error('❌ Google Sheets returned success: false');
+                throw new Error(result.message || result.error || 'Có lỗi xảy ra khi gửi dữ liệu');
             }
         } catch (corsError) {
             // Nếu CORS fail, thử với no-cors mode (fire and forget)
-            console.warn('CORS mode failed, trying no-cors mode:', corsError);
-            
-            // Với no-cors, không thể đọc response nhưng request vẫn được gửi
-            await fetch(GOOGLE_SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(requestData)
+            console.warn('⚠️ CORS mode failed, trying no-cors mode');
+            console.warn('⚠️ CORS Error details:', {
+                name: corsError.name,
+                message: corsError.message,
+                stack: corsError.stack
             });
             
-            console.log('Request sent with no-cors mode (response cannot be read)');
-            // Giả định thành công vì không thể kiểm tra response
-            return { success: true, message: 'Đã gửi thông tin (no-cors mode)' };
+            try {
+                // Với no-cors, không thể đọc response nhưng request vẫn được gửi
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestData)
+                });
+                
+                console.log('📤 Request sent with no-cors mode (response cannot be read)');
+                console.log('⚠️ Cannot verify if data was saved - check Google Sheet manually');
+                // Giả định thành công vì không thể kiểm tra response
+                return { success: true, message: 'Đã gửi thông tin (no-cors mode - không thể xác nhận)' };
+            } catch (noCorsError) {
+                console.error('❌ No-cors mode also failed:', noCorsError);
+                throw noCorsError;
+            }
         }
     } catch (error) {
         console.error('Error submitting to Google Sheets:', error);
