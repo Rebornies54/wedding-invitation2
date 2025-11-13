@@ -1,5 +1,6 @@
-// Google Apps Script URL - Thay đổi URL này sau khi deploy Google Apps Script
-// Hướng dẫn: Xem file GOOGLE_APPS_SCRIPT_SETUP.md
+// Google Apps Script URL
+// Cập nhật URL này sau khi deploy Google Apps Script
+// Hoặc tạo biến môi trường trên Vercel và sử dụng build-time replacement
 const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyAtSOEKKoCxOBa2IE3SBnQ0HtA7vNEarmJE1gf8uQT2od-CacPRBS1I_wyqY35i5is-Q/exec';
 
 // Premium Heart Colors - 3 beautiful tones
@@ -180,9 +181,15 @@ async function submitRSVPToGoogle(data) {
     }
     
     try {
+        // Format data với action-based structure
+        const requestData = {
+            action: 'save',
+            data: data
+        };
+        
         console.log('Sending data to Google Apps Script:', {
             url: GOOGLE_SCRIPT_URL,
-            data: data
+            requestData: requestData
         });
         
         // Thử với CORS mode trước
@@ -193,7 +200,7 @@ async function submitRSVPToGoogle(data) {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify(requestData)
             });
             
             console.log('Response status:', response.status, response.statusText);
@@ -223,7 +230,7 @@ async function submitRSVPToGoogle(data) {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify(requestData)
             });
             
             console.log('Request sent with no-cors mode (response cannot be read)');
