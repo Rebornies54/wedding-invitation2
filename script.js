@@ -1,6 +1,6 @@
 // Google Apps Script URL - Thay đổi URL này sau khi deploy Google Apps Script
 // Hướng dẫn: Xem file GOOGLE_APPS_SCRIPT_SETUP.md
-const GOOGLE_SCRIPT_URL = 'YOUR_GOOGLE_SCRIPT_URL_HERE';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyAtSOEKKoCxOBa2IE3SBnQ0HtA7vNEarmJE1gf8uQT2od-CacPRBS1I_wyqY35i5is-Q/exec';
 
 // Premium Heart Colors - 3 beautiful tones
 const HEART_COLORS = [
@@ -180,28 +180,63 @@ async function submitRSVPToGoogle(data) {
     }
     
     try {
-        const response = await fetch(GOOGLE_SCRIPT_URL, {
-            method: 'POST',
-            mode: 'cors', // Sử dụng CORS để có thể đọc response
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data)
+        console.log('Sending data to Google Apps Script:', {
+            url: GOOGLE_SCRIPT_URL,
+            data: data
         });
         
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const result = await response.json();
-        
-        if (result.success) {
-            return { success: true, message: result.message || 'Đã gửi thông tin thành công!' };
-        } else {
-            throw new Error(result.message || 'Có lỗi xảy ra khi gửi dữ liệu');
+        // Thử với CORS mode trước
+        try {
+            const response = await fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            });
+            
+            console.log('Response status:', response.status, response.statusText);
+            
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error('Response error:', errorText);
+                throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+            }
+            
+            const result = await response.json();
+            console.log('Response from Google Apps Script:', result);
+            
+            if (result.success) {
+                return { success: true, message: result.message || 'Đã gửi thông tin thành công!' };
+            } else {
+                throw new Error(result.message || 'Có lỗi xảy ra khi gửi dữ liệu');
+            }
+        } catch (corsError) {
+            // Nếu CORS fail, thử với no-cors mode (fire and forget)
+            console.warn('CORS mode failed, trying no-cors mode:', corsError);
+            
+            // Với no-cors, không thể đọc response nhưng request vẫn được gửi
+            await fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            });
+            
+            console.log('Request sent with no-cors mode (response cannot be read)');
+            // Giả định thành công vì không thể kiểm tra response
+            return { success: true, message: 'Đã gửi thông tin (no-cors mode)' };
         }
     } catch (error) {
         console.error('Error submitting to Google Sheets:', error);
+        console.error('Error details:', {
+            name: error.name,
+            message: error.message,
+            stack: error.stack
+        });
         throw error;
     }
 }
@@ -351,16 +386,27 @@ document.addEventListener('DOMContentLoaded', function() {
                 let savedToGoogle = false;
                 
                 // Try to submit to Google Sheets first
-                try {
-                    await submitRSVPToGoogle(data);
-                    console.log('RSVP submitted to Google Sheets successfully');
-                    savedToGoogle = true;
-                } catch (googleError) {
-                    console.warn('Failed to submit to Google Sheets, using localStorage as backup:', googleError);
+                console.log('Checking GOOGLE_SCRIPT_URL:', GOOGLE_SCRIPT_URL);
+                
+                if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL !== 'YOUR_GOOGLE_SCRIPT_URL_HERE') {
+                    try {
+                        console.log('Attempting to submit RSVP to Google Sheets...');
+                        const result = await submitRSVPToGoogle(data);
+                        console.log('✅ RSVP submitted to Google Sheets successfully:', result);
+                        savedToGoogle = true;
+                    } catch (googleError) {
+                        console.error('❌ Failed to submit to Google Sheets:', googleError);
+                        console.error('Error message:', googleError.message);
+                        console.warn('⚠️ Using localStorage as backup');
+                    }
+                } else {
+                    console.warn('⚠️ Google Apps Script URL chưa được cấu hình. Dữ liệu chỉ được lưu vào localStorage.');
+                    console.info('💡 Để lưu vào Google Sheets, vui lòng cấu hình GOOGLE_SCRIPT_URL trong script.js');
                 }
                 
                 // Always save to localStorage as backup (even if Google Sheets succeeds)
-                saveRSVPDataToLocalStorage(data);
+                const savedRSVP = saveRSVPDataToLocalStorage(data);
+                console.log('RSVP saved to localStorage:', savedRSVP);
                 
                 // Show petals animation
                 createPetalsAnimation();
