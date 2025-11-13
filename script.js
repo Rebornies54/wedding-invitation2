@@ -1,3 +1,7 @@
+// Google Apps Script URL - Thay đổi URL này sau khi deploy Google Apps Script
+// Hướng dẫn: Xem file GOOGLE_APPS_SCRIPT_SETUP.md
+const GOOGLE_SCRIPT_URL = 'YOUR_GOOGLE_SCRIPT_URL_HERE';
+
 // Premium Heart Colors - 3 beautiful tones
 const HEART_COLORS = [
     { color: '#B03A48', opacity: 0.4 }, // deep red
@@ -168,7 +172,42 @@ function updateBackgroundColor() {
 }
 
 // RSVP Data Storage Functions
-function saveRSVPData(data) {
+// Submit RSVP to Google Sheets via Google Apps Script
+async function submitRSVPToGoogle(data) {
+    // Kiểm tra xem đã cấu hình URL chưa
+    if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL === 'YOUR_GOOGLE_SCRIPT_URL_HERE') {
+        throw new Error('Chưa cấu hình Google Apps Script URL. Vui lòng xem file GOOGLE_APPS_SCRIPT_SETUP.md');
+    }
+    
+    try {
+        const response = await fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'cors', // Sử dụng CORS để có thể đọc response
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            return { success: true, message: result.message || 'Đã gửi thông tin thành công!' };
+        } else {
+            throw new Error(result.message || 'Có lỗi xảy ra khi gửi dữ liệu');
+        }
+    } catch (error) {
+        console.error('Error submitting to Google Sheets:', error);
+        throw error;
+    }
+}
+
+// Backup: Save to localStorage (fallback)
+function saveRSVPDataToLocalStorage(data) {
     // Get existing RSVPs from localStorage
     let rsvps = JSON.parse(localStorage.getItem('weddingRSVPs') || '[]');
     
@@ -290,8 +329,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const rsvpForm = document.getElementById('rsvpForm');
     
     if (rsvpForm) {
-        rsvpForm.addEventListener('submit', function(e) {
+        rsvpForm.addEventListener('submit', async function(e) {
             e.preventDefault();
+            
+            // Disable submit button to prevent double submission
+            const submitBtn = rsvpForm.querySelector('.btn-submit');
+            const originalText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Đang gửi...';
             
             // Get form data
             const formData = new FormData(rsvpForm);
@@ -302,10 +347,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 message: formData.get('message')
             };
             
-            // Save to localStorage
             try {
-                const savedRSVP = saveRSVPData(data);
-                console.log('RSVP saved:', savedRSVP);
+                let savedToGoogle = false;
+                
+                // Try to submit to Google Sheets first
+                try {
+                    await submitRSVPToGoogle(data);
+                    console.log('RSVP submitted to Google Sheets successfully');
+                    savedToGoogle = true;
+                } catch (googleError) {
+                    console.warn('Failed to submit to Google Sheets, using localStorage as backup:', googleError);
+                }
+                
+                // Always save to localStorage as backup (even if Google Sheets succeeds)
+                saveRSVPDataToLocalStorage(data);
                 
                 // Show petals animation
                 createPetalsAnimation();
@@ -320,9 +375,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Update admin panel if visible
                 updateAdminPanel();
+                
             } catch (error) {
                 console.error('Error saving RSVP:', error);
                 alert('Có lỗi xảy ra khi lưu thông tin. Vui lòng thử lại.');
+            } finally {
+                // Re-enable submit button
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
             }
         });
     }
