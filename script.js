@@ -380,6 +380,8 @@ document.addEventListener('DOMContentLoaded', function() {
             submitBtn.disabled = true;
             submitBtn.textContent = 'Đang gửi...';
             
+            console.log('🚀 Form submission started');
+            
             // Get form data
             const formData = new FormData(rsvpForm);
             const data = {
@@ -389,11 +391,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 message: formData.get('message')
             };
             
+            console.log('📝 Form data:', data);
+            
             try {
                 let savedToGoogle = false;
                 
                 // Try to submit to Google Sheets first
-                console.log('Checking GOOGLE_SCRIPT_URL:', GOOGLE_SCRIPT_URL);
+                console.log('🔍 Checking GOOGLE_SCRIPT_URL:', GOOGLE_SCRIPT_URL);
+                console.log('🔍 URL type check:', typeof GOOGLE_SCRIPT_URL);
+                console.log('🔍 URL value check:', GOOGLE_SCRIPT_URL !== 'YOUR_GOOGLE_SCRIPT_URL_HERE');
                 
                 if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL !== 'YOUR_GOOGLE_SCRIPT_URL_HERE') {
                     try {
